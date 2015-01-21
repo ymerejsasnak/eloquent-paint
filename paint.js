@@ -270,14 +270,54 @@ function rectangleFrom(a, b) {
 }
 
 
-//blobs tool
+//random empty circles tool
 tools.Bubbles = function(event, cx) {
+	var setFill = cx.fillStyle;
+	var setSize = cx.lineWidth; //save it to use for radius expression and to reset at end
 	trackDrag(function(event) {
 		var pos = relativePos(event, cx.canvas);
-		var radius = Math.random() * 10 + 5;
+		var radius = Math.random() * (setSize + 1) + 1;
 		cx.beginPath();
-		cx.arc(pos.x, pos.y, radius, 0, Math.PI * 2)
+		cx.lineWidth = 2; //(because of this)
+		cx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
 		cx.stroke();
+		cx.fillStyle = "white";
+		cx.fill();
+	}, function(event) {
+		cx.lineWidth = setSize;
+		cx.fillStyle = setFill;
+	});
+};
+
+//random filled circles tool
+tools.Blobs = function(event, cx) {
+	var setSize = cx.lineWidth; 
+	trackDrag(function(event) {
+		var pos = relativePos(event, cx.canvas);
+		var radius = Math.random() * (setSize + 1) + 1;
+		cx.beginPath();
+		cx.arc(pos.x, pos.y, radius / 3, 0, Math.PI * 2);
+		cx.globalAlpha = Math.random() / 2;
+		cx.fill();
+		cx.beginPath();
+		cx.arc(pos.x + Math.random() * 10, pos.y + Math.random() * 10, radius / 2, 0, Math.PI * 2);
+		cx.globalAlpha = Math.random() / 4;
+		cx.fill();
+		cx.beginPath();
+		cx.arc(pos.x - Math.random() * 10, pos.y - Math.random() * 10, radius / 2, 0, Math.PI * 2);
+		cx.globalAlpha = Math.random() / 4;
+		cx.fill();
+		cx.beginPath();
+		cx.arc(pos.x + Math.random() * 10, pos.y - Math.random() * 10, radius / 2, 0, Math.PI * 2);
+		cx.globalAlpha = Math.random() / 4;
+		cx.fill();
+		cx.beginPath();
+		cx.arc(pos.x - Math.random() * 10, pos.y + Math.random() * 10, radius / 2, 0, Math.PI * 2);
+		cx.globalAlpha = Math.random() / 4;
+		cx.fill();
+	}, function(event) {
+		cx.lineWidth = setSize;
+		cx.globalAlpha = 1;
 	});
 };
 
