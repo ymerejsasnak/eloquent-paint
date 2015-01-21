@@ -27,7 +27,9 @@ function elt(name, attributes) {
 var controls = Object.create(null);
 
 function createPaint(parent) {
-	var canvas = elt("canvas", {width: 500, height: 300});
+	var canvas = elt("canvas");
+	canvas.width  = window.innerWidth / 1.1;
+  canvas.height = window.innerHeight / 1.2;
 	var cx = canvas.getContext("2d");
 	var toolbar = elt("div", {class: "toolbar"});
 	for (var name in controls) {
@@ -237,9 +239,47 @@ function randomPointInRadius(radius) {
 	}
 }
 
+//filled rectangle tool
+tools.Rectangle = function(event, cx) {
+	var relativeStart = relativePos(event, cx.canvas);
+	var pageStart = {x: event.pageX, y: event.pageY};
+
+	var trackingNode = document.createElement("div");
+	trackingNode.style.position = "absolute";
+	trackingNode.style.background = cx.fillStyle;
+	document.body.appendChild(trackingNode);
+
+	trackDrag(function(event){
+		var rect = rectangleFrom(pageStart, {x: event.pageX, y: event.pageY});
+		trackingNode.style.left = rect.left + "px";
+		trackingNode.style.top = rect.top + "px";
+		trackingNode.style.width = rect.width + "px";
+		trackingNode.style.height = rect.height + "px";
+  }, function(event) {
+  	var rect = rectangleFrom(relativeStart, relativePos(event, cx.canvas));
+    cx.fillRect(rect.left, rect.top, rect.width, rect.height);
+    document.body.removeChild(trackingNode);
+	});
+};
+
+function rectangleFrom(a, b) {
+  return {left: Math.min(a.x, b.x),
+          top: Math.min(a.y, b.y),
+          width: Math.abs(a.x - b.x),
+          height: Math.abs(a.y - b.y)};
+}
 
 
-
+//blobs tool
+tools.Bubbles = function(event, cx) {
+	trackDrag(function(event) {
+		var pos = relativePos(event, cx.canvas);
+		var radius = Math.random() * 10 + 5;
+		cx.beginPath();
+		cx.arc(pos.x, pos.y, radius, 0, Math.PI * 2)
+		cx.stroke();
+	});
+};
 
 
 

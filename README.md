@@ -11,3 +11,5 @@ create weird/unusual tools, particle based things, things with physics, fibonacc
 'wacky shapes' - draw rectangle with randomized bezier curves?
 
 change save to save a file or local storage or something.
+
+add flood fill (see exercise) and maybe color picker? (also exercise)

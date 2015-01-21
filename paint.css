@@ -1,0 +1,21 @@
+html, body {
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+}
+
+body {
+	background: lightgray;
+}
+
+
+canvas {
+	background: white;
+}
+
+.toolbar {
+	width: 35%;
+	background: white;
+	border: 1px solid black;
+	margin: 0 auto;
+}
