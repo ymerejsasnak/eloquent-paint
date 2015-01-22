@@ -321,6 +321,20 @@ tools.Blobs = function(event, cx) {
 	});
 };
 
+//randomized line tool (only looks good for smaller line widths)
+tools["Broken Line"] = function(event, cx, onEnd) {
+	cx.lineCap = "butt";
+
+	var pos = relativePos(event, cx.canvas);
+	trackDrag(function(event) {
+		cx.beginPath();
+		cx.moveTo(pos.x + Math.random() * 9 - 4, pos.y + Math.random() * 9 - 4);
+		pos = relativePos(event, cx.canvas);
+		cx.lineTo(pos.x + Math.random() * 9 - 4, pos.y + Math.random() * 9 - 4);
+		cx.stroke();
+	}, onEnd);
+};
+
 
 
 createPaint(document.body);
