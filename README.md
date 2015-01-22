@@ -13,3 +13,5 @@ create weird/unusual tools, particle based things, things with physics, fibonacc
 change save to save a file or local storage or something.
 
 add flood fill (see exercise) and maybe color picker? (also exercise)
+
+add clear/new button

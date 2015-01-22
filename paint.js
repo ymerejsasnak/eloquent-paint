@@ -335,6 +335,100 @@ tools["Broken Line"] = function(event, cx, onEnd) {
 	}, onEnd);
 };
 
+//radiating lines tool
+tools.Radiate = function(event, cx) {
+  cx.lineCap = "round";
+  var setWidth = cx.lineWidth;
+  trackDrag(function(event) {
+  	cx.lineWidth = 1;
+  	for (var i = 0; i < 5; i++) {
+     	cx.beginPath();
+     	var pos = relativePos(event, cx.canvas);
+  		cx.moveTo(pos.x, pos.y);
+  		cx.lineTo(pos.x + Math.cos(Math.random() * Math.PI * 2) * setWidth,
+  		          pos.y + Math.sin(Math.random() * Math.PI * 2) * setWidth);
+  		cx.globalAlpha = Math.random() / 2;
+  		cx.stroke();
+  	}
+  }, function() {
+    cx.lineWidth = setWidth;
+    cx.globalAlpha = 1;
+  });
+};
+
+//rainbow line tool
+tools["Rainbow Line"] = function(event, cx) {
+	cx.lineCap = "round";
+  var setColor = cx.strokeStyle;
+  var hue = 0;
+  var pos = relativePos(event, cx.canvas);
+	trackDrag(function(event) {
+		cx.beginPath();
+		cx.moveTo(pos.x, pos.y);
+		pos = relativePos(event, cx.canvas);
+		cx.lineTo(pos.x, pos.y);
+		cx.strokeStyle = "hsla(" + hue + ", 50%, 50%, 0.5)";
+		cx.stroke();
+		hue += 5;
+	}, function() {
+    cx.strokeStyle = setColor;
+	});
+};
+
+//downward triangle shapes
+tools.Icicles = function(event, cx) {
+	cx.lineCap = "round";
+  var setWidth = cx.lineWidth;
+	var pos = relativePos(event, cx.canvas);
+	cx.lineWidth = 1;
+	cx.globalAlpha = 0.4;
+	trackDrag(function(event) {
+		cx.beginPath();
+		cx.moveTo(pos.x, pos.y);
+		pos = relativePos(event, cx.canvas);
+		cx.lineTo(pos.x, pos.y + setWidth * Math.random() * 5);
+		cx.lineTo(pos.x, pos.y);
+		cx.fill();
+	}, function() {
+    cx.lineWidth = setWidth;
+    cx.globalAlpha = 1;
+	});
+};
+
+//weird jagged line
+tools.Jagged = function(event, cx) {
+	cx.lineCap = "round";
+  var setWidth = cx.lineWidth;
+	var pos = relativePos(event, cx.canvas);
+	var setColor = cx.fillStyle;
+	cx.lineWidth = 1;
+	trackDrag(function(event) {
+		cx.beginPath();
+		cx.moveTo(pos.x, pos.y);
+		pos = relativePos(event, cx.canvas);
+		cx.lineTo(pos.x + Math.random() * setWidth * 2 - setWidth, pos.y);
+		cx.stroke();
+		cx.lineTo(pos.x + Math.random() * setWidth * 2 - setWidth, pos.y + Math.random() * setWidth * 2 - setWidth);
+		cx.stroke();
+		cx.lineTo(pos.x, pos.y + Math.random() * setWidth * 2 - setWidth);
+		cx.stroke();
+		cx.lineTo(pos.x, pos.y);
+		cx.stroke();
+		//cx.fillStyle = "white";
+		
+	}, function() {
+    cx.lineWidth = setWidth;
+    cx.globalAlpha = 1;
+	});
+};
+
+
+
+
+
+
+
+
 
 
 createPaint(document.body);
